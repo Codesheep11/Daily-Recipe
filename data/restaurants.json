@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "老张牛肉面",
+        "category": "面食",
+        "flavor": "咸香",
+        "rating": 4.5
+    },
+    {
+        "id": 2,
+        "name": "川渝老灶火锅",
+        "category": "火锅",
+        "flavor": "辛辣",
+        "rating": 4.8
+    },
+    {
+        "id": 3,
+        "name": "Wagas轻食",
+        "category": "沙拉",
+        "flavor": "清淡",
+        "rating": 4.2
+    },
+    {
+        "id": 4,
+        "name": "金拱门",
+        "category": "快餐",
+        "flavor": "油炸",
+        "rating": 3.9
+    },
+    {
+        "id": 5,
+        "name": "潮汕砂锅粥",
+        "category": "粥",
+        "flavor": "清淡",
+        "rating": 4.6
+    },
+    {
+        "id": 6,
+        "name": "湖南土菜馆",
+        "category": "炒菜",
+        "flavor": "辛辣",
+        "rating": 4.4
+    }
+]
