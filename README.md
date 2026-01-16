@@ -3,38 +3,46 @@
 github链接：https://github.com/Codesheep11/Daily-Recipe
 
 ---
+
 # 🍜 Daily-Recipe: 基于 RAG 与长短期记忆的美食推荐 Agent
 
-Daily-Recipe 是一个具备 **长期记忆（Long-term Memory）与检索增强生成（RAG）** 能力的智能美食推荐系统。
 
-不同于传统的基于规则或协同过滤的推荐系统，Daily-Recipe 利用 mem0 框架构建用户画像向量索引，通过检索用户的历史饮食记录作为负面约束（Negative Constraints），实现了“每日推荐不重样”的个性化决策逻辑。
+Daily-Recipe 是一个具备**长期记忆（Long-term Memory）** 与**检索增强生成（RAG）** 能力的智能美食推荐系统。
 
-📚 项目核心 (IR 原理映射)
+不同于传统的基于规则或协同过滤的推荐系统，Daily-Recipe 利用 **`mem0`** 框架构建用户画像向量索引，通过检索用户的历史饮食记录作为**负面约束（Negative Constraints）**，实现了“每日推荐不重样”的个性化决策逻辑。
+
+---
+
+## IR 原理映射
+
 本项目将信息检索（IR）的核心流程应用于 Agent 决策中：
 
-1. Indexing (索引构建):
-    - 使用 mem0 + Qdrant (Vector DB) 将用户的历史选择转化为向量并存储。
+1. **Indexing (索引构建)**:
+* 使用 `mem0` + `Qdrant` (Vector DB) 将用户的历史选择转化为向量并存储。
+* 利用 `restaurants.json` 构建基于属性（Flavor, Category）的结构化文档库。
 
-    - 利用 restaurants.json 构建基于属性（Flavor, Category）的结构化文档库。
 
-1. Retrieval (检索召回):
+2. **Retrieval (检索召回)**:
+* **Memory Retrieval**: 使用语义检索（Semantic Search）查找用户最近吃过的食物。
+* **Corpus Retrieval**: 基于决策逻辑（如“今天想吃清淡的”），对餐厅知识库进行布尔检索（Boolean Retrieval）。
 
-    - Memory Retrieval: 使用语义检索（Semantic Search）查找用户最近吃过的食物。
 
-    - Corpus Retrieval: 基于决策逻辑（如“今天想吃清淡的”），对餐厅知识库进行布尔检索（Boolean Retrieval）。
+3. **Ranking & Filtering (排序与过滤)**:
+* 实现 **Diversity Ranking (多样性排序)**：降低与近期记忆相似度高的候选项权重，避免重复推荐。
 
-1. Ranking & Filtering (排序与过滤):
 
-    - 实现 Diversity Ranking (多样性排序)：降低与近期记忆相似度高的候选项权重，避免重复推荐。
+4. **Relevance Feedback (相关性反馈)**:
+* 用户点击“采纳建议”后，系统将该次交互写入记忆库，更新索引，从而影响下一次的检索结果（Feedback Loop）。
 
-1. Relevance Feedback (相关性反馈):
 
-    - 用户点击“采纳建议”后，系统将该次交互写入记忆库，更新索引，从而影响下一次的检索结果（Feedback Loop）。
 
-📂 项目结构
+---
+
+## 项目结构
 
 遵循模块化软件工程架构设计：
-```
+
+```text
 Daily-Recipe_Project/
 ├── app.py                 # [Presentation Layer] Streamlit 前端交互入口
 ├── configs/
@@ -50,3 +58,46 @@ Daily-Recipe_Project/
 │   └── restaurants.json   # [Corpus] 结构化餐厅数据源
 └── requirements.txt       # 项目依赖
 ```
+
+---
+
+## 快速开始
+
+### 1. 环境准备
+
+确保你已安装 Python 3.9+。
+
+```bash
+# 克隆项目
+git clone https://github.com/your-username/Daily-Recipe.git
+cd Daily-Recipe
+
+# 创建虚拟环境 (推荐)
+python -m venv venv
+source venv/bin/activate
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+### 2. 配置 API Key
+
+本项目利用 LLM 进行语义理解，需要 OpenAI API Key（或其他兼容接口）。
+
+* 你可以在运行界面中输入 Key。
+* 或者在 `configs/settings.py` 中预设环境变量。
+
+### 3. 运行系统
+
+```bash
+streamlit run app.py
+```
+
+启动后，浏览器将自动打开 `http://localhost:8501`。
+
+---
+
+## 📝 开发者说明
+
+* **关于数据源**: `data/restaurants.json` 模拟了真实的餐厅数据库。在生产环境中，这应替换为 Elasticsearch 或 SQL 数据库查询。
+* **关于向量存储**: 本项目配置为将 Qdrant 数据存储在本地 `./local_vector_db` 文件夹中，无需 Docker 即可运行。若需重置，点击 Sidebar 的 "Reset Memory" 即可。
