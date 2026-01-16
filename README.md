@@ -5,7 +5,7 @@ github链接：https://github.com/Codesheep11/Daily-Recipe
 ---
 # 🍜 Daily-Recipe: 基于 RAG 与长短期记忆的美食推荐 Agent
 
-Daily-Recipe 是一个具备**长期记忆（Long-term Memory）与检索增强生成（RAG）**能力的智能美食推荐系统。
+Daily-Recipe 是一个具备 **长期记忆（Long-term Memory）与检索增强生成（RAG）** 能力的智能美食推荐系统。
 
 不同于传统的基于规则或协同过滤的推荐系统，Daily-Recipe 利用 mem0 框架构建用户画像向量索引，通过检索用户的历史饮食记录作为负面约束（Negative Constraints），实现了“每日推荐不重样”的个性化决策逻辑。
 
